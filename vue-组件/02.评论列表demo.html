@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lib/bootstrap-3.3.7.css">
+    <script src="../lib/vue-2.4.0.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <cmt-box @func='loadComments'></cmt-box>
+            <ul class="list-group">
+                <li class="list-group-item" v-for='item in list ' :key='item.id'>
+                    <span class="badge">评论人:{{ item.user }}</span>
+                    {{ item.content }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <template id='tmp1'> 
+        <div>
+        <div class="form-group">
+            <label>评论人:</label>
+            <input type="text" class="form-control" v-model='user'>
+        </div>
+        <div class="form-group">
+            <label>评论内容:</label>
+            <textarea type="text" class="form-control" v-model='content'></textarea>
+        </div>
+        <div class="form-group">
+            <input type="button" value="按钮" class="btn btn-primary" @click="postComment">
+        </div>
+        </div>
+    </template>
+    <script>
+
+        var commentBox = { //组建中的data是个函数 return回的是个对象
+            data(){      //user content 属于模板定义tmp1的，后面是要定义到组件里面去 放在这里
+                return {
+                    user:'',
+                    content:''
+                }
+            },
+            template:'#tmp1',
+            methods:{ 
+                postComment(){//5.发表评论的方法
+                    // 评论数据存放在localStorage中
+                    // localStorage只能存放字符串类型的 JSON.stringify 保存数据的时候要通过
+                    //JSON.parse转换成对象
+
+                    var comment = {id:Date.now(), user:this.user, content:this.content}
+                    var list = JSON.parse(localStorage.getItem('con')|| '[]')
+                    //从前面开始追加新添加的评论数据
+                    list.unshift(comment)
+                  
+                    //重新保存最新的评论数据
+                    localStorage.setItem('con',JSON.stringify(list))
+
+                    this.user = this.content = ''
+
+                    this.$emit('func')  //子组件通过$emit触发事件  将数据传递给父组件
+                }
+
+            }
+        }
+
+
+
+
+        var vm=new Vue({
+           el:'#app',
+           data:{
+               list:[
+                   {id: Date.now(), user: '多啦A梦', content: '百宝袋来一个'},
+                   {id: Date.now(), user: '樱桃丸子', content: '开心果小丸子'},
+                   {id: Date.now(), user: '大雄', content: '可爱大熊'}
+               ]
+           },
+           created() {
+               this.loadComments()
+           },
+           methods:{ //在父组件methods中声明事件处理函数
+            loadComments(){ //把本地locaStorage中的数据，重新赋值给list 加载评论列表
+                var list = JSON.parse(localStorage.getItem('con') || '[]')
+                this.list = list 
+            }
+
+           },
+           components:{ 'cmt-box': commentBox }//定义子组件 
+        });
+
+
+
+
+        // 1.先在list建一些假数据
+        //2.把发表评论的这块作为一个组件
+        //3.创建组件  创建模板对象commentBox
+        //4.把commentBox定义为子组件 注册组件components:{}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  /* background-image: url(../imgs/fourGold.jpg);  */
+  /* //webpack不能直接读取图片 需要用到file-loader url-loader  */
+}

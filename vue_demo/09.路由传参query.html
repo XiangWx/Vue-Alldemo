@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+    <!-- 1.导入vue-router js文件 -->
+    <script src="../lib/vue-router-3.0.1.js"></script>
+</head>
+
+
+
+<!-- 通过query传参 
+1.导入vue-router js文件
+2，创建组件的模板对象
+3.创建路由对象，配置匹配规则
+4，将router路由对象挂载奥vm实例身上
+5,占坑 <router-view></router-view> 
+-->
+<body>
+    <div id="app">
+       
+        <router-link to = "/login?id=10">登陆</router-link>
+        <router-link to = "/register?name=zs">注册</router-link>
+         <!-- 5,占坑 -->
+         <router-view></router-view> 
+    </div>
+
+    <script>
+        //2，创建组件的模板对象
+        var login = {    
+            template:'<h1> 登陆 ---- {{$route.query.id}} ----</h1>',
+            created(){  //组件的生命周期钩子函数
+                console.log(this.$route.query.id)
+            }
+        }
+
+        var register = {    
+            template:'<h1> 注册 ---{{ $route.}}---</h1>',
+            created(){  //组件的生命周期钩子函数 组件data 方法都已经渲染出来
+                console.log(this.$route.query.name)
+            }
+        }
+
+        //3.创建路由对象，配置匹配规则
+        var router = new VueRouter({
+            routes:[
+                {path:'/login',component:login},
+                {path:'/register',component:register}
+
+            ]
+        })
+
+        var vm = new Vue({
+           el:'#app',
+           data:{},
+           methods:{},
+           router:router   //简写成router 4，将router路由对象挂载奥vm实例身上
+        });
+    </script>
+</body>
+
+</html>

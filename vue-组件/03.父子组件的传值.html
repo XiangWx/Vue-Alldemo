@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 1.父像子传值 通过v-bind 属性绑定 -->
+        <!-- 子组件向父组件传值 通过事件绑定 在父组件中定义一个事件 用@绑定-->
+        <!--  -->
+            <coml v-bind:parentmsg='msg' @func='getMsg'></coml>   
+    </div>
+   
+    <template id='tmp1'>
+        <div>
+            <p>这是子元素 ----{{parentmsg}}</p>
+      <input type="button" value="向父组件传递消息" @click="sendMsg">
+
+        </div>
+    </template>
+    <script>
+        var coml = {  //2.模板对象
+            template:'#tmp1',
+            data(){  //子组件的数据
+                return {
+                    msg:'子组件中,msg'
+                }
+            },
+            props:['parentmsg'], //4.存放的是父组件传向子组件的属性名
+            methods:{ 
+                sendMsg(){       //子组件向父组件传值 通过$emit触发事件 传递数据 this代表子组件
+                    this.$emit('func',this.msg) 
+                }
+            }
+
+        }
+        var vm=new Vue({
+           el:'#app',
+           data:{
+               msg:'父组件中,加油干!',
+               msgson:''   //父组件拿到的数据
+           },
+           methods:{
+            getMsg(data){  //子组件调用 会传递data数据过来
+                this.msgson = data  //拿到子组件传的值
+                console.log(this.msgson)
+            }
+
+           },
+           components:{ //3.通过components注册子组件
+            coml
+           }
+        });
+    </script>
+</body>
+
+</html>

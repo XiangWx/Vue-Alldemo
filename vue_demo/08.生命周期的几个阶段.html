@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命周期</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="xxx" @click='cli'>
+        <p id='one'>{{ msg }}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'今天冬至了'
+            },
+            methods:{
+                open(){
+                    console.log('执行')
+                },
+                cli(){
+                    this.msg = '2018/12/22'
+                }
+
+            },
+            //1.第一个生命周期，beforeCreate 实例vm创建之前会执行 
+            beforeCreate(){
+                //console.log(this.msg)//undefinded
+            },
+            //2.第二个生命周期，此时的data methods节点都已经被初始化过了，发送ajax最合适的阶段
+            created(){
+                //console.log(this.msg) //可以输出了
+                //this.open()   //可以输出
+            },
+            //3.第三个生命周期，beforeMount 模板在内存中已经编辑完成了，但还未渲染到页面上
+            beforeMount(){
+                //console.log(document.getElementById('one').innerText) // {{msg}}
+            },
+            //4. 第四个生命周期 mounted 内存中的模板字符串此时已经挂载到页面上了，用户可以看到渲染之后的页面了
+            mounted(){
+                //console.log(document.getElementById('one').innerText) // 正常输出
+            },
+            //5.第五个生命周期 beforeUpdate() 数据已经做了更新，但是界面还未更新，用户看到的还是之前的老页面
+            beforeUpdate(){
+                // console.log('页面上：'+document.getElementById('one').innerText) //今天冬至了
+                // console.log('data中：'+this.msg)  //2018/12/22
+            },
+            //6.第六个生命周期 updated() 页面执行的时候，data 数据更新之后，页面上的数据也会随之保持同步
+            updated(){ 
+                console.log('页面上：'+document.getElementById('one').innerText)  //2018/12/22
+                console.log('data中：'+this.msg)   //2018/12/22
+            },
+            //7.第七个生命周期 beforeDestory() vue实例从运行阶段到销毁阶段 实例对象身上的指令，数据，方法还是处于可读状态
+            beforeDestory(){
+
+            },
+            //8.第八个生命周期 destoryed() 实例对象身上的指令，数据，方法全部销毁 不可读
+            destoryed(){
+                
+            }
+
+        })
+    </script>
+</body>
+</html>

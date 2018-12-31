@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lib/bootstrap-3.3.7.css">
+    <script src="../lib/vue-2.4.0.js"></script>
+    <script src="../lib/moment.js"></script>
+</head>
+<body>
+ <div id="app">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">品牌添加</h3>
+        </div>
+        <div class="panel-body">
+           <label>
+                ID:
+                <input type="text" class="form-control" v-model='id'>
+           </label>
+           <label>
+                Name:
+                <input type="text" class="form-control" v-model='name'>
+           </label>
+           <input type="button" class="btn btn-primary" value="添加"  @click='add'>
+
+           <label>
+                搜索关键字:
+                <input type="text" class="form-control" v-model='keywords'>
+           </label>
+        </div>
+    </div>
+
+    <!-- bootstrap 带边框的表格 样式 -->
+    <table class="table  table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>ctime</th>
+            <th>opration</th>
+             </tr>
+          </thead>
+          <tbody>  
+              <!-- 使用v-for要添加key属性 要给定一个唯一标识 例如id 或者索引 -->
+              <tr v-for='item in search(keywords)' :key='item.id'>
+                  <td>{{item.id}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.ctime | dataFormat()}}</td>
+                  <td>
+                      <a href="" @click.prevent='del(item.id)'>删除</a>
+                  </td>
+              </tr>
+          </tbody>
+     </table>
+
+</div>
+    <script>
+        //全局的过滤器，进行时间的格式化 darastr----时间字符串
+        // Vue.filter('dataFormat',(dataStr,pattern="")=>{
+        Vue.filter('dataFormat',(dataStr)=>{
+             //时间的转换可以引入moment.js转换 
+             return moment().format('YYYY-MM-DD hh:mm:ss'); 
+            //根据给定的时间字符串 得到特定的时间
+            //datastr 相当于是管道符左边的数据 item.ctime 
+            //pattern 相当于是用户传递过来的字符串格式 YYYY-MM-DD 或者 yyyy-mm-dd
+
+            // var dt = new Date(dataStr)
+            // var y = dt.getFullYear()
+            // var m = dt.getMonth()+1 //月份0-11
+            // var d = dt.getDate()
+           
+            // //toLowerCase()转为小写
+            // if(pattern.toLowerCase() === 'yyyy-mm-dd'){
+            //     return `${y}-${m}-${d}`
+            // }else{}
+            //      var hh = dt.getHours()
+            //     var mm = dt.getMinutes()
+            //     var ss = dt.getSeconds()
+            //     return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+            // }
+            
+
+        })
+
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                id:'',
+                name:'',
+                keywords:'',
+                list:[
+                    {id:1,name:'小夹子',ctime:new Date()},
+                    {id:2,name:'小云子',ctime:new Date()}
+                ]
+
+            },
+            methods:{
+                //add:function(){} ==简写成 add(){}
+                add(){//点击添加
+                    //获取到表单里面的id name 因为设置了v-model 直接从data中可以获取到
+                    //组织出一个对象 通过数组追加的方法 把这个对象添加到data中的list中去
+                    var user = {id:this.id, name:this.name, ctime:new Date()}
+                    this.list.push(user)
+                    //添加完成了 让表单内清空 简写形式
+                    this.id = this.name = ''  
+                },
+                del(id){//删除 id是形参 上面的item.id是实参
+                    //拿到要删除的那项id id根据索引来找
+                    //1.ES6提供的新方法 some(item，i)来遍历 找到符合条件的，就会立即终止循环
+                    //如果找到返回true  
+                    //splice(index要删除/添加的索引，删除的个数)
+                    this.list.some((item,i)=>{
+                        if(item.id == id){
+                            this.list.splice(i,1)
+                            return true
+                        }
+                    })
+
+                    //2.findIndex 返回值是找到符合条件的元素的索引值，一旦找到会终止循环
+                    /** var i = this.list.findIndex(item=>{
+                        // if(item.id == id){
+                        //     return true
+                        // }
+
+                        //简写成
+                        return item.id == id
+                    })
+                    this.list.splice(i,1) **/
+
+                    //3.filter 过滤 过滤出来符合条件的元素 找完了返回true
+                    /**var arr =[1,10,4,20,5]
+                    arr.filter(item=>{
+                    if(item<10){
+                         return true
+                    }})       //[1,4,5]**/
+                    
+                },
+                search(keywords){//搜索关键字
+                    //1.通过for循环找到符合查询条件的数据保存到新的数组中
+                    /** var newList =[]
+                    this.list.forEach(item=>{
+                        if(item.name.indexOf(keywords.trim())!=-1){
+                            newList.push(item)
+                        }
+                    })
+                    return newList **/
+
+
+                    //2.ES6新方法，查找字符串是否在另一个字符串中
+                    // 如果包含被搜索的字符串，返回true 反之false
+                   return this.list.filter(item=>{
+                        if(item.name.includes(keywords)){
+                            return true
+                        }
+                    })
+                    
+                }
+
+               
+            }
+        })
+    
+    </script>
+</body>
+</html>

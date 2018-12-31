@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+   <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input @click='run' type="button" value="coming-on">
+        <input @click='stop' type="button" value="stop">
+        <h1 v-text='msg'></h1>
+    
+    </div>
+
+    <script>
+        //Vue创建的时候 会将data methods中所有的成员 挂载在自己的实例对象身上，方便在methods中的方法内部进行data的操作
+        //this 指向vm 对象
+        //data 当作一个数据库 methods 用来业务逻辑的处理
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'人间不值得！你值得！',
+                timerId:null
+            },
+            methods:{
+                run(){
+                    clearInterval(this.timerId)
+                   this.timerId = setInterval(()=>{
+                    //截取首字符 substr(截图开始的位置，截取的个数)
+                    var start = this.msg.substr(0,1)
+                    console.log(start)
+                    //截取第一个开始所有的字符substr(1) 只写了截取的位置 表示截取后面的所有
+                    var end = this.msg.substr(1)
+                    console.log(end)
+
+                    //重新拼接字符串
+                    this.msg = end + start
+                   },500)
+                },
+                stop(){
+                    clearInterval(this.timerId)
+                }
+            }
+        })
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js钩子函数-小圆球半场动画</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+    <style>
+        #app{
+            display: flex;
+            justify-content: center
+        }
+        .circle{
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border-radius: 50%
+        }
+    
+    
+    </style>
+
+</head>
+<!-- 动画的生命周期
+before-enter
+enter
+after
+
+
+-->
+
+<body>
+    <div id="app">
+        <input type="button" value="点击加入购物车" @click='flag=!flag'>
+
+        <!-- 在属性中声明 JavaScript 钩子 -->
+        <!-- v-on:before-enter='beforeEnter' -->
+        <transition @before-enter='beforeEnter' @enter='enter'
+         @after-enter='afterEnter'
+         @enter-cancelled = 'enterCancelled'>
+            <div class="circle" v-show='flag'></div>
+        </transition>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: false
+            },
+            methods: {
+                //el代表要执行半场动画的对象 是个DOM原生元素
+                beforeEnter(el) { //1.动画入场之前，起始位置
+                    el.style.transform = 'translate(0,0)'
+                },
+                enter(el, done) { //2.动画开始之后的样式(此处设置动画进入之后的样式，及结束状态)
+                    el.offsetWidth   //没有官方解释，必须加，不加样式效果出不来 可以加offset系列的都可以
+                    el.style.transform = 'translate(150px,500px)'
+                    el.style.transition = 'all 1s ease'
+                    done()   //如果不调用done() 动画结束之后不会消失
+                },
+                afterEnter(el) { //3.动画完成之后的状态，会调用afterEnter
+                    this.flag = !this.flag
+                },
+               
+                // enterCancelled(el){ //4.用于取消开始动画的
+                //    
+                // }
+
+
+            }
+        });
+    </script>
+</body>
+
+</html>

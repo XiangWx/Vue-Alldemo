@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父组件向子组件传值</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="父组件中修改数据">
+        <!-- 父组件 在引用子组件的时候 通过 : 属性绑定 把需要传递给子组件的值 以属性绑定的形式 传给子组件内部 -->
+        <login @show='show'  :parentmsg='msg'></login>  
+    </div>
+
+    <template id="sontmp">
+            <p>这是私有的子组件{{name}}--{{age}} ---- {{parentmsg}}</p>
+    </template>
+
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            msg:'我是父组件里的数据,加油!',
+            sonmsg:''
+        },
+        methods: {
+            show(data){
+                this.sonmsg = data
+            }
+            
+        },
+        components:{
+            login:{
+                data(){ //子组件里面的data 存的数据 是私有的
+                    return {
+                        name:'蜡笔小新',
+                        age:'8'
+                    }
+                },
+                template:'#sontmp',
+                props:['parentmsg'],//存放字符串类型的数据, 字符串就是父组件传递过来的属性名
+                methods:{
+
+                }
+            }
+        }
+    })
+    
+    
+    </script>
+</body>
+</html>

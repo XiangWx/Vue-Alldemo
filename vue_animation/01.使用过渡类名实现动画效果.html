@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+    <style> 
+    /* .v-enter,
+    .v-leave-to{
+        opacity: 0;
+        transform:translateX(200px)
+    } */
+
+    
+    .v-enter{
+        opacity: 0;
+        transform: translateX(200px)
+    }
+    .v-leave-to{
+        opacity: 0;
+        transform: translateX(-200px)
+    }
+
+    .v-enter-active,
+    .v-leave-active{
+        transition:all 0.8s ease;
+    }
+    
+    </style>
+</head>
+<!-- 
+    .v-enter   元素的起始状态，此时还没有进入
+    .v-enter-to  动画已经执行完
+    .v-leave  动画离场前的样式
+    .v-leave-to 动画离场之后的样式
+    .v-enter-active 入场动画的时间段
+    .v-leave-active 离场动画的时间段
+
+    此案例直接只写了两个时间点 v-enter v-leave-active 因为官方文档已经写明 v-enter在进入下一帧时候就会销毁，
+    opacity=0销毁 那页面上显示的就是opacity=1 所以中间的可以省略
+ -->
+<body>
+    <div id="app">
+        <input type="button" value="toggle" @click="flag=!flag">
+        <transition>
+            <h1 v-if='flag'>animation动画</h1>
+        </transition>
+    </div>
+    <script>
+        var vm=new Vue({
+           el:'#app',
+           data:{
+            flag:false
+           },
+           methods:{}
+        });
+    </script>
+</body>
+
+</html>

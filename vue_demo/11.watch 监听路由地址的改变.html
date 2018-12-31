@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lib/bootstrap-3.3.7.css">
+    <script src="../lib/vue-2.4.0.js"></script>
+    <script src="../lib/vue-router-3.0.1.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to='/login'>登陆</router-link>
+        <router-link to='/register'>注册</router-link>
+    </div>
+
+<template id='tmp1'>
+   <P>登陆页面</P>
+</template>  
+
+<template id='tmp2'>
+    <P>注册页面</P>
+</template>  
+
+<script>
+        var login = {
+            template:'#tmp1'
+        }
+        var register = {
+            template:'#tmp2'
+        }
+
+        var router = new VueRouter({
+            routes:[
+                {path:'/',redirect:'/login'},
+                {path:'/login',component:login},
+                {path:'/register',component:register}
+            ]
+        })
+        var vm=new Vue({
+           el:'#app',
+           data:{},
+           methods:{}
+        });
+    </script>
+</body>
+
+</html>

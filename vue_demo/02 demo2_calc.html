@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <input type="text" v-model='cal1'>
+        <select v-model='cal2'>
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+
+        <input type="text" v-model='cal3'>
+
+        <input type="button" value='=' v-on:click='clac'>
+
+        <input type="text" v-bind:value='result'>
+    </div>
+
+    <script>
+        var cm = new Vue({
+            el: '#app',
+            data: {
+                cal1: 0,
+                cal2: '+',
+                cal3: 0,
+                result: 0
+            },
+            methods: {
+                //switch分支
+                //switch（变量）
+                //   case 值1：
+                //   执行语句1
+                //   break;
+                //   case 值2：
+                //   执行语句2
+                //   break;
+                clac() {
+                switch (this.cal2) {
+                    case '+':
+                        this.result = parseFloat(this.cal1) + parseFloat(this.cal3)
+                        break;
+                    case '-':
+                        this.result = parseFloat(this.cal1) - parseFloat(this.cal3)
+                        break;
+                    case '*':
+                        this.result = parseFloat(this.cal1) * parseFloat(this.cal3)
+                        break;
+                    case '/':
+                        this.result = parseFloat(this.cal1) / parseFloat(this.cal3)
+                        break
+                    }
+                }
+
+
+            }
+        })
+
+    </script>
+</body>
+
+</html>

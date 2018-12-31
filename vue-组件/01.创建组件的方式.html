@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>创建组件</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <!-- <div id="app">
+
+    </div> -->
+
+    <div id="app2">
+        <mycom3></mycom3>
+        <login></login>
+    </div>
+
+    <template id='tmp1'>
+       <p>这时tmp1的代码</p>
+    </template>
+
+    <template id='templ2'>
+        <h1>这是私有的login组件</h1>
+    </template>
+
+    <script>
+        Vue.component('mycom3',{
+            template:'#tmp1'
+        })
+        // var vm = new Vue({
+        //    el:'#app',
+        //    data:{},
+        //    methods:{} 
+        // });
+
+        var vm2 = new Vue({
+            el:'#app2',
+            data:{},
+            components:{
+                login:{
+                    template:'#templ2'
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/vue-2.4.0.js"></script>
+    <script src='../lib/vue-router-3.0.1.js'></script>
+</head>
+<!-- 路由传参方式2  params
+1，导入vue-router js文件
+2，创建路由对象new VueRouter（{}）
+3.将路由对象挂载到vm实例身上
+4，填坑  <router-view></router-view>
+
+-->
+<body>
+    <div id="app">        
+        <router-link to='/login/6/ww'>登陆</router-link>
+        <router-link to='/register'>注册</router-link>
+        <!-- //填坑  渲染到页面 -->
+        <router-view></router-view>
+    </div>
+    <script>
+        var login = {
+            template:'<p>登陆页面 ---id：{{$route.params.id}} --- name:{{$route.params.name}}</p>',
+            created(){
+                console.log(this.$route.params)  //{id: "6", name: "ww"}
+            }
+        }
+        var register = {
+            template:'<p>注册页面</p>'
+        }
+
+        var router = new VueRouter({  //创建路由对象
+            routes: [
+                {path:'/login/:id/:name',component:login},
+                {path:'/register',component:register}
+            ]
+        })
+        var vm = new Vue({ //将路由对象挂载到vm实例身上
+           el:'#app',
+           data:{},
+           methods:{},
+           router
+        });
+    </script>
+</body>
+
+</html>
